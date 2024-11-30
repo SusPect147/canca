@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Telegram Mini App</title>
   <style>
+      @font-face {
+      font-family: 'MrCoasterGBlack';
+      src: url('20694.otf') format('opentype');
+    }
+
     body {
       margin: 0;
       height: 100vh;
@@ -13,6 +18,7 @@
       align-items: center;
       font-family: Arial, sans-serif;
       overflow: hidden;
+      font-family: 'MrCoasterGBlack', Arial, sans-serif;
     }
 
     /* Экран загрузки */
@@ -39,6 +45,7 @@
       font-size: 20px;
       font-weight: bold;
       z-index: 11; /* На переднем плане */
+      font-family: 'MrCoasterGBlack', Arial, sans-serif;
     }
 
     .progress-bar-container {
@@ -74,6 +81,7 @@
       justify-content: center;
       align-items: center;
       z-index: 1; /* Позади экрана загрузки */
+      font-family: 'MrCoasterGBlack', Arial, sans-serif;
     }
 
     .game-screen.hidden {
