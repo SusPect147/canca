@@ -22,7 +22,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #000; /* Черный фон */
+      background: linear-gradient(to right, rgb(179, 100, 36), rgb(88, 43, 0));
       color: #fff; /* Белый текст */
       display: flex;
       flex-direction: column;
@@ -55,7 +55,7 @@
     .progress-bar {
       width: 0;
       height: 100%;
-      background-color: rgb(27, 157, 233); /* Зеленый цвет прогресса */
+      background-color: rgb(53, 35, 3); /* Зеленый цвет прогресса */
       transition: width 5s linear; /* Плавное заполнение за 5 секунд */
       z-index: 11;
     }
@@ -133,12 +133,7 @@
     // Устанавливаем приветствие
     const usernameElement = document.getElementById('username');
     if (username) {
-      usernameElement.innerHTML = `
-  <div style="text-align: right; font-size: 45px; line-height: 1.2; margin-right: 20px;">
-    <span>Привет,</span><br>
-    <span style="font-size: 30px;">${username}!</span>
-  </div>
-`;
+        usernameElement.innerHTML = `<span style="font-size: 15px;">Привет,</span><br><span style="font-size:20px;">${username}!</span>`;
     } else {
       usernameElement.textContent = 'Добро пожаловать в Coconut Clicker!';
     }
@@ -176,3 +171,4 @@
   </script>
 </body>
 </html>
+
