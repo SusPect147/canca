@@ -2,46 +2,255 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Telegram Mini App</title>
   <style>
+      @font-face {
+      font-family: 'MrCoasterGBlack';
+      src: url('20694.otf') format('opentype');
+    }
+
     body {
       margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      font-family: 'MrCoasterGBlack', Arial, sans-serif;
+    }
+
+    /* Экран загрузки */
+    .loading-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-45deg, rgb(34, 2, 24), rgb(94, 58, 8));
+      color: #fff; /* Белый текст */
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
-      background-color: #000; /* Черный фон */
-      color: #fff; /* Белый текст */
-      font-family: Arial, sans-serif;
+      align-items: center;
+      z-index: 11; /* На переднем плане */
+    }
+
+    .loading-screen.hidden {
+      display: none; /* Убираем экран после загрузки */
     }
 
     .username {
-      position: absolute;
-      top: 10%;
       font-size: 20px;
       font-weight: bold;
-      color: #fff;
+      z-index: 11; /* На переднем плане */
+      font-family: 'MrCoasterGBlack', Arial, sans-serif;
     }
 
-    .image-container {
+    .progress-bar-container {
+      position: absolute;
+      bottom: 20px;
+      width: 80%;
+      height: 10px;
+      background-color: #000000; /* Темный фон полоски */
+      border-radius: 5px;
+      overflow: hidden;
+      z-index: 11;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background-color: rgb(255, 255, 255); /* Зеленый цвет прогресса */
+      transition: width 5s linear; /* Плавное заполнение за 5 секунд */
+      z-index: 12;
+    }
+
+    /* Основной экран игры */
+    .game-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(41, 26, 18));
+      color: #fff;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      z-index: 1; /* Позади экрана загрузки */
+      font-family: 'MrCoasterGBlack', Arial, sans-serif;
     }
 
-    img {
-      max-width: 80%;
+    .game-screen.hidden {
+      display: none; /* Убираем игру до завершения загрузки */
+    }
+
+    .game-content {
+      font-size: 24px;
+      text-align: center;
+    }
+
+    /* Кокос на экране загрузки */
+    .loading-coconut {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      transform: translate(50%, 0%); /* Центр изображения находится в углу */
+      width: 500px; /* Размер кокоса */
+      height: auto;
+      opacity: 0.5; /* Прозрачность */
+      z-index: 10;
+
+    }
+    .container228 {
+  position: fixed; /* Фиксируем контейнер относительно окна */
+  bottom: 0; /* Привязываем к нижней части экрана */
+  left: 0; /* Привязываем к левому краю */
+  width: 95%; /* Растягиваем контейнер на всю ширину экрана */
+  display: flex;
+  justify-content: space-evenly; /* Равномерное распределение элементов */
+  align-items: center;
+  height: var(--container-height);
+  padding: 3% 3%; /* Добавляем отступы слева и справа */
+  border: 5px solid transparent;
+  background: linear-gradient(to bottom, #ffffff, #b4b4b4);
+  background-clip: padding-box, border-box;
+  border-radius: 0; /* Убираем скругления для краев */
+  margin: 0;
+  outline: none; /* Убираем контур при фокусе */
+  -webkit-tap-highlight-color: transparent; /* Убираем синий фон при нажатии */
+}
+
+
+
+    
+    .button228 {
+      background-color: transparent;
+      border-radius: 5px;
+      height: var(--button-height);
+      cursor: pointer;
+      margin: 0 5px;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      transition: brightness 0.2s;
+ 
+    }
+    
+    .button228 img {
+      width: 50px;
+      height: 50px;
+      border-radius: 5px;
+      transition: transform 0.2s;
+      border-radius: 10px;
+    }
+
+    .button228:hover img {
+      transform: scale(1.1);
+    }
+    
+    .button228-text {
+      margin-top: 4px;
+      font-size: 15px;
+      color: rgb(0, 0, 0);
+
+    }
+    
+    .mini-buttons {
+      display: none;
+      flex-direction: row;
+      margin-bottom: 1px;
+    }
+    
+    .mini-button {
+      background-color: #59a9c2;
+      border: none;
+      border-radius: 5px;
+      padding: 2px 5px;
+      margin: 0 2px;
+      cursor: pointer;
+      color: white;
+      transition: filter 0.2s;
       height: auto;
     }
+
+
+    img {
+            width: 250px;
+            top: 40%;
+            cursor: pointer;
+            outline: none;
+            pointer-events: auto;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.1s;
+            user-select: none; /* Запрет выделения */
+        }
+    
+    #coinImage:active {
+      transform: scale(0.9);
+    }
+    
+    img active {
+      box-shadow: 2px 2px 5px #fc894d;
+    }
+
+        #coin {
+  position: absolute; /* Фиксируем элемент относительно окна */
+  top: 5%; /* Отступ сверху 5% */
+  left: 50%; /* Центрируем по горизонтали */
+  transform: translateX(-50%); /* Смещаем элемент влево на половину его ширины для точного центрирования */
+  font-size: 24px; /* Размер шрифта */
+  font-weight: bold; /* Жирный текст */
+  color: #ffffff; /* Цвет текста */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень для объема */
+}
+
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
 </head>
 <body>
-  <p class="username" id="username">Загрузка...</p>
-  <div class="image-container">
-    <img src="cocos.png" alt="Cocos Logo">
+  <!-- Экран загрузки -->
+  <div class="loading-screen" id="loadingScreen">
+    <p class="username" id="username">One minute please...</p>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <img src="image.png" alt="Coconut" class="loading-coconut">
+  </div>
+
+  <!-- Основной экран игры -->
+  <div class="game-screen hidden" id="gameScreen">
+    <div class="game-content">
+        <div id="coin"> 🥥0</div>
+        <img id="coinImage" src="image.png" >
+        <div class="container228">
+            <div class="button228" onclick="toggleMiniButtons(this)">
+              <img src="image.png" alt="Меню" draggable="false">
+              <div class="button228-text">Menu</div>
+            </div>
+            <div class="button228" onclick="toggleMiniButtons(this)">
+              <img src="magaz.png" alt="ПРОкачка" draggable="false">
+              <div class="button228-text">Skin Shop</div>
+            </div>
+            <div class="button228" onclick="toggleMiniButtons(this)">
+              <img src="kvest.png" alt="Задания" id="taskButton" draggable="false">
+              <div class="button228-text">Quests</div>
+            </div>
+            <div class="button228" onclick="toggleMiniButtons(this)">
+              <img src="inven.png" alt="Инвентарь" draggable="false">
+              <div class="button228-text">Skins Inv</div>
+            </div>
+            <div class="button228" onclick="toggleMiniButtons(this)">
+                <img src="other.png" alt="Задания" id="OTHERmenu" draggable="false">
+                <div class="button228-text">Other</div>
+              </div>
+          </div>
+    </div>
   </div>
 
   <script>
@@ -55,13 +264,98 @@
     const user = tg.initDataUnsafe?.user || {};
     const username = user.username || `${user.first_name || ''} ${user.last_name || ''}`.trim();
 
-    // Отображение имени
+    // Устанавливаем приветствие
     const usernameElement = document.getElementById('username');
     if (username) {
-      usernameElement.textContent = `Привет, ${username}!`;
+        usernameElement.innerHTML = `
+  <div style="text-align: right; font-size: 45px; line-height: 1.2; margin-right: 20px;">
+    <span>Hello,</span><br>
+    <span style="font-size: 30px;">${username}!</span>
+  </div>
+`;
     } else {
-      usernameElement.textContent = 'Не удалось получить имя пользователя';
+      usernameElement.textContent = 'Welcome';
     }
+
+    // Прогресс загрузки
+    const progressBar = document.getElementById('progressBar');
+    setTimeout(() => {
+      // Устанавливаем ширину прогресс-бара на 100% для симуляции загрузки
+      progressBar.style.width = '100%';
+    }, 0);
+
+    // Убираем экран загрузки и показываем игру через 5 секунд
+    setTimeout(() => {
+      const loadingScreen = document.getElementById('loadingScreen');
+      const gameScreen = document.getElementById('gameScreen');
+
+      // Скрываем экран загрузки
+      loadingScreen.classList.add('hidden');
+
+      // Показываем игровой экран
+      gameScreen.classList.remove('hidden');
+    }, 5000);
+
+      // Запрет перетаскивания изображений
+  document.addEventListener('dragstart', (event) => {
+    if (event.target.tagName === 'IMG') {
+      event.preventDefault();
+    }
+  });
+
+    let coinCount = 0;
+    const coinDisplay = document.getElementById('coin');
+    const coinImage = document.getElementById('coinImage');
+    
+
+    coinImage.addEventListener('click', (e) => {
+        coinCount += 1;
+        coinDisplay.textContent = `🥥${coinCount.toFixed(0)}`;
+    });
+
+
+    function toggleMiniButtons(button228) {
+      // Убираем мини-кнопки от всех кнопок
+      document.querySelectorAll('.button228.active').forEach(function(b) {
+        if (b !== button228) {
+          b.classList.remove('active');
+          b.querySelector('.mini-buttons').style.display = 'none';
+        }
+      });
+      // Переключаем мини-кнопки для выбранной кнопки
+      const miniButtons = button228.querySelector('.mini-buttons');
+      miniButtons.style.display = miniButtons.style.display === 'none' ? 'flex' : 'none';
+      button228.classList.toggle('active');
+    }
+    document.getElementById('taskButton').addEventListener('click', () => {
+      taskContainer.style.display = taskContainer.style.display === 'none' ? 'block' : 'none';
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Инициализация Telegram Web App
+            window.Telegram.WebApp.initData = window.Telegram.WebApp.initData || '';
+        window.Telegram.WebApp.colorScheme = window.Telegram.WebApp.colorScheme || 'light';
+        window.Telegram.WebApp.setHeaderColor("#2b2b2b");
+        window.Telegram.WebApp.setBackgroundColor("#2b2b2b");
+        window.Telegram.WebApp.setBottomBarColor("#2b2b2b");
+
+
+        // Применяем режим полного экрана для мини-приложения
+        window.Telegram.WebApp.expand();
+        window.Telegram.WebApp.requestFullscreen();
   </script>
 </body>
 </html>
