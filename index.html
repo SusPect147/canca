@@ -132,7 +132,7 @@
     // Устанавливаем приветствие
     const usernameElement = document.getElementById('username');
     if (username) {
-      usernameElement.textContent = `Привет, ${username}!\nДобро пожаловать в Coconut Clicker!`;
+      usernameElement.innerHTML = `<span style="font-size: 36px;">Привет,</span><br><span style="font-size: 48px;">${username}!</span>`;
     } else {
       usernameElement.textContent = 'Добро пожаловать в Coconut Clicker!';
     }
