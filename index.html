@@ -49,23 +49,44 @@
     }
 
     .progress-bar-container {
-      position: absolute;
-      bottom: 20px;
-      width: 80%;
-      height: 10px;
-      background-color: #000000; /* Темный фон полоски */
-      border-radius: 5px;
-      overflow: hidden;
-      z-index: 11;
-    }
+  position: absolute;
+  bottom: 20px;
+  width: 80%;
+  height: 10px;
+  background-color: #000000;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 11;
+}
 
-    .progress-bar {
-      width: 0;
-      height: 100%;
-      background-color: rgb(255, 255, 255); /* Зеленый цвет прогресса */
-      transition: width 5s linear; /* Плавное заполнение за 5 секунд */
-      z-index: 12;
-    }
+.progress-bar {
+  width: 0;
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  transition: width 2s linear; /* Более быстрая анимация */
+  z-index: 12;
+}
+
+.loading-text {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  transition: transform 0.1s ease; /* Плавная трансформация */
+  z-index: 12;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+
+
 
     /* Основной экран игры */
     .game-screen {
@@ -74,7 +95,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(41, 26, 18));
+      background: linear-gradient(180deg, #1f0414 0%, #512a06 100%);
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -209,8 +230,14 @@
   font-size: 24px; /* Размер шрифта */
   font-weight: bold; /* Жирный текст */
   color: #ffffff; /* Цвет текста */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень для объема */
 }
+.username1 {
+    position: absolute;      /* Абсолютное позиционирование относительно родителя */
+    top: 10%;                /* Отступ сверху на 10% */
+    left: 10%;                /* Прижатие к правому краю */
+    margin-right: 20px;      /* Дополнительный отступ справа, если нужно */
+}
+
 
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -226,12 +253,14 @@
     <div class="progress-bar-container">
       <div class="progress-bar" id="progressBar"></div>
     </div>
+    <div class="loading-text" id="loadingText">0%</div>
     <img src="image.png" alt="Coconut" class="loading-coconut">
   </div>
 
   <!-- Основной экран игры -->
   <div class="game-screen hidden" id="gameScreen">
     <div class="game-content">
+        <p class="username1" id="username1">One minute please...</p>
         <div id="coin"> 🥥0</div>
         <img id="coinImage" src="image.png" alt="Coin">
         <div class="container228">
@@ -270,27 +299,53 @@
     const user = tg.initDataUnsafe?.user || {};
     const username = user.username || `${user.first_name || ''} ${user.last_name || ''}`.trim();
 
-    // Устанавливаем приветствие
-    const usernameElement = document.getElementById('username');
+    // Функция для обновления контента
+const updateUsername = (elementId, textPrefix, defaultText) => {
+    const usernameElement = document.getElementById(elementId);
     if (username) {
         usernameElement.innerHTML = `
-  <div style="text-align: right; font-size: 45px; line-height: 1.2; margin-right: 20px;">
-    <span>Hello,</span><br>
-    <span style="font-size: 30px;">${username}!</span>
-  </div>
-`;
+            <div style="text-align: right; font-size: 45px; line-height: 1.2; margin-right: 20px;">
+                <span>${textPrefix}</span><br>
+                <span style="font-size: 30px;">${username}!</span>
+            </div>
+        `;
     } else {
-      usernameElement.textContent = 'Welcome';
+        usernameElement.textContent = defaultText;
     }
+};
 
-    // Прогресс загрузки
-    const progressBar = document.getElementById('progressBar');
-    setTimeout(() => {
-      // Устанавливаем ширину прогресс-бара на 100% для симуляции загрузки
-      progressBar.style.width = '100%';
-    }, 0);
+// Обновляем оба элемента
+updateUsername('username1', 'profile:', '?????');  // Для второго username
+updateUsername('username', 'Hello,', 'Welcome to the Coconut Clicker');  // Для первого username
 
-    // Убираем экран загрузки и показываем игру через 5 секунд
+
+const progressBar = document.getElementById('progressBar');
+const loadingText = document.getElementById('loadingText');
+
+let progress = 0;
+let fontSize = 20; // Начальный размер текста
+
+const interval = setInterval(() => {
+  progress += 1; // Увеличиваем прогресс на 2%
+  progressBar.style.width = `${progress * 1.3}%`;
+  loadingText.innerText = `${progress}%`;
+
+  // Увеличиваем текст на каждом проценте, кратном 10
+  if (progress % 10 === 0) {
+    fontSize += 10; // Увеличиваем размер текста на 10 пикселей
+    loadingText.style.fontSize = `${fontSize}px`;
+  }
+
+  // Добавляем повороты текста на основе прогресса
+  if (progress % 20 === 10) {
+    loadingText.style.transform = 'translate(-50%, -50%) rotate(-15deg)';
+  } else if (progress % 20 === 0) {
+    loadingText.style.transform = 'translate(-50%, -50%) rotate(15deg)';
+  }
+
+  // Проверяем, достиг ли прогресс 100%
+  if (progress >= 100) {
+    clearInterval(interval); // Останавливаем таймер при 100%
     setTimeout(() => {
       const loadingScreen = document.getElementById('loadingScreen');
       const gameScreen = document.getElementById('gameScreen');
@@ -300,7 +355,17 @@
 
       // Показываем игровой экран
       gameScreen.classList.remove('hidden');
-    }, 5000);
+    }, 500); // Короткая задержка для плавного завершения
+  }
+}, 100); // Интервал обновления каждые 100 мс для быстрой анимации
+
+
+
+
+
+
+
+
 
     let coinCount = 0;
     const coinDisplay = document.getElementById('coin');
@@ -360,4 +425,3 @@
   </script>
 </body>
 </html>
-
