@@ -238,7 +238,7 @@
 .username1 {
     position: absolute;      /* Абсолютное позиционирование относительно родителя */
     top: 10%;                /* Отступ сверху на 10% */
-    left: 10%;                /* Прижатие к правому краю */
+    left: 5%;                /* Прижатие к правому краю */
     margin-right: 3%;      /* Дополнительный отступ справа, если нужно */
 }
 
@@ -310,7 +310,7 @@ const updateUsername = (elementId, textPrefix, textSize1, defaultText, textSize 
         usernameElement.innerHTML = `
             <div style="text-align: left; font-size: ${textSize1}; line-height: 1.2; margin-right: 20px;">
                 <span>${textPrefix}</span><br>
-                <span style="font-size: ${textSize};">${username}!</span>
+                <span style="font-size: ${textSize};">${username}</span>
             </div>
         `;
     } else {
@@ -402,14 +402,6 @@ const interval = setInterval(() => {
     document.getElementById('taskButton').addEventListener('click', () => {
       taskContainer.style.display = taskContainer.style.display === 'none' ? 'block' : 'none';
     });
-
-
-
-
-
-
-
-
 
 
 
