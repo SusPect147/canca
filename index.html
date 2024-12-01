@@ -19,6 +19,7 @@
       font-family: Arial, sans-serif;
       overflow: hidden;
       font-family: 'MrCoasterGBlack', Arial, sans-serif;
+      user-select: none;
     }
 
     /* Экран загрузки */
@@ -107,18 +108,18 @@
     }
     .container228 {
   position: fixed; /* Фиксируем контейнер относительно окна */
-  bottom: 0; /* Привязываем к нижней части экрана */
+  bottom: 2%; /* Привязываем к нижней части экрана */
   left: 0; /* Привязываем к левому краю */
-  width: 100%; /* Растягиваем контейнер на всю ширину экрана */
+  width: 98%; /* Растягиваем контейнер на всю ширину экрана */
   display: flex;
   justify-content: space-evenly; /* Равномерное распределение элементов */
   align-items: center;
-  height: var(--container-height);
-  padding: 0; /* Убираем отступы, чтобы было впритык */
+  height: 90px;
   border: 5px solid transparent;
-  background: linear-gradient(to bottom, #ffffff, #b4b4b4);
+  background: rgba(255, 255, 255, 0.5); /* Полупрозрачный белый фон */
+  backdrop-filter: blur(10px); /* Эффект размытия заднего фона */
   background-clip: padding-box, border-box;
-  border-radius: 0; /* Убираем скругления для краев */
+  border-radius: 35px; /* Немного скругляем углы для мягкости */
   margin: 0;
   outline: none; /* Убираем контур при фокусе */
   -webkit-tap-highlight-color: transparent; /* Убираем синий фон при нажатии */
@@ -148,6 +149,8 @@
       border-radius: 5px;
       transition: transform 0.2s;
       border-radius: 10px;
+      outline: none; /* Убираем контур при фокусе */
+  -webkit-tap-highlight-color: transparent; /* Убираем синий фон при нажатии */
     }
 
     .button228:hover img {
@@ -155,7 +158,7 @@
     }
     
     .button228-text {
-      margin-top: 4px;
+      margin-top: 2px;
       font-size: 15px;
       color: rgb(0, 0, 0);
 
@@ -188,7 +191,7 @@
             pointer-events: auto;
             -webkit-tap-highlight-color: transparent;
             transition: transform 0.1s;
-            user-select: none; /* Запрет выделения */
+    user-select: none; /* Запрет выделения */
         }
     
     #coinImage:active {
@@ -201,7 +204,7 @@
 
         #coin {
   position: absolute; /* Фиксируем элемент относительно окна */
-  top: 5%; /* Отступ сверху 5% */
+  top: 15%; /* Отступ сверху 5% */
   left: 50%; /* Центрируем по горизонтали */
   transform: translateX(-50%); /* Смещаем элемент влево на половину его ширины для точного центрирования */
   font-size: 24px; /* Размер шрифта */
@@ -213,6 +216,9 @@
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js"></script>
+
 </head>
 <body>
   <!-- Экран загрузки -->
@@ -297,68 +303,83 @@
       gameScreen.classList.remove('hidden');
     }, 5000);
 
-      // Запрет перетаскивания изображений
-  document.addEventListener('dragstart', (event) => {
-    if (event.target.tagName === 'IMG') {
-      event.preventDefault();
-    }
-  });
-
-  let coinCount = 0;
-const coinDisplay = document.getElementById('coin');
-const coinImage = document.getElementById('coinImage');
-
-// Функция для обновления монет на сервере
-async function updateCoinsOnServer(telegramId, newCoins) {
-    const response = await fetch('/coins', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            telegram_id: telegramId,
-            coins: newCoins,
-        }),
-    });
-    const data = await response.json();
-    if (data.status !== 'success') {
-        console.error('Error updating coins:', data.error);
-    }
-}
-
-// Функция для получения монет с сервера
-async function fetchCoinsFromServer(telegramId) {
-    const response = await fetch(`/coins?telegram_id=${telegramId}`);
-    const data = await response.json();
-    if (data.coins !== undefined) {
-        coinCount = data.coins;
-        coinDisplay.textContent = `🥥${coinCount.toFixed(0)}`;
-    } else {
-        console.error('Error fetching coins:', data.error);
-    }
-}
-
-// Событие для клика на монетку
-coinImage.addEventListener('click', (e) => {
-    coinCount += 1;
-    coinDisplay.textContent = `🥥${coinCount.toFixed(0)}`;
     
-    // Обновляем монеты на сервере
-    if (window.telegramId) {
-        updateCoinsOnServer(window.telegramId, coinCount);
-    } else {
-        console.error('Telegram ID not found.');
-    }
-});
+    
 
-// Получение Telegram ID при запуске
-Telegram.WebApp.ready();
-Telegram.WebApp.onEvent('auth', (data) => {
-    window.telegramId = data.user.id; // Сохраняем Telegram ID в глобальной переменной
 
-    // Загружаем монеты с сервера
-    fetchCoinsFromServer(window.telegramId);
-});
+
+    const firebaseConfig = {
+            apiKey: "AIzaSyBb4qSwOxaOABqCQQYbZWWKpUP3mpJVLPA",
+            authDomain: "coconutclicker-b0f78.firebaseapp.com",
+            projectId: "coconutclicker-b0f78",
+            storageBucket: "coconutclicker-b0f78.firebasestorage.app",
+            messagingSenderId: "308633551511",
+            appId: "1:308633551511:web:e13be3904fa01ee7a8dfd2"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Elements
+        const coinDisplay = document.getElementById('coin');
+        const coinImage = document.getElementById('coinImage');
+
+        tg.expand();
+
+        // Get user ID from Telegram
+        const userId = tg.initDataUnsafe.user?.id;
+
+        if (!userId) {
+            alert("User ID not found. Please make sure you open this mini-app in Telegram.");
+        }
+
+        let coinCount = 0;
+
+        // Load coin count from Firestore
+        async function loadCoinCount() {
+            if (!userId) return;
+
+            const docRef = db.collection('users').doc(String(userId));
+            const doc = await docRef.get();
+            if (doc.exists) {
+                coinCount = doc.data().coins || 0;
+                coinDisplay.textContent = `🥥${coinCount}`;
+            } else {
+                console.log("No such document!");
+            }
+        }
+
+        // Save coin count to Firestore
+        async function saveCoinCount() {
+            if (!userId) return;
+
+            const docRef = db.collection('users').doc(String(userId));
+            await docRef.set({
+                coins: coinCount
+            });
+            console.log("Coin count saved!");
+        }
+
+        // Handle button click
+        coinImage.addEventListener('click', async () => {
+            coinCount += 1;
+            coinDisplay.textContent = `🥥${coinCount}`;
+            await saveCoinCount();
+        });
+
+        // Load initial da
+
+
+
+
+
+
+
+
+
+
+
 
 
 
