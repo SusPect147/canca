@@ -317,10 +317,9 @@
   measurementId: "G-6HE58FQ5BR"
 };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
         // Elements
         const coinDisplay = document.getElementById('coin');
         const coinImage = document.getElementById('coinImage');
