@@ -301,13 +301,15 @@
     const username = user.username || `${user.first_name || ''} ${user.last_name || ''}`.trim();
 
     // Функция для обновления контента
-const updateUsername = (elementId, textPrefix, defaultText) => {
+const updateUsername = (elementId, textPrefix, defaultText, textSize = '30px') => {
     const usernameElement = document.getElementById(elementId);
+    const username = localStorage.getItem('username');  // Получаем имя пользователя из хранилища или другого источника
+
     if (username) {
         usernameElement.innerHTML = `
             <div style="text-align: right; font-size: 45px; line-height: 1.2; margin-right: 20px;">
                 <span>${textPrefix}</span><br>
-                <span style="font-size: 30px;">${username}!</span>
+                <span style="font-size: ${textSize};">${username}!</span>
             </div>
         `;
     } else {
@@ -315,9 +317,10 @@ const updateUsername = (elementId, textPrefix, defaultText) => {
     }
 };
 
-// Обновляем оба элемента
-updateUsername('username1', 'profile:', '?????');  // Для второго username
-updateUsername('username', 'Hello,', 'Welcome to the Coconut Clicker');  // Для первого username
+// Обновляем оба элемента с разными размерами шрифта
+updateUsername('username1', 'profile:', '?????', '10px');  // Для второго username с размером 10px
+updateUsername('username', 'Hello,', 'Welcome to the Coconut Clicker', '30px');  // Для первого username с размером 30px
+
 
 
 const progressBar = document.getElementById('progressBar');
