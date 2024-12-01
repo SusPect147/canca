@@ -18,7 +18,6 @@
       align-items: center;
       font-family: Arial, sans-serif;
       overflow: hidden;
-      font-family: 'MrCoasterGBlack', Arial, sans-serif;
       user-select: none;
     }
 
@@ -234,7 +233,7 @@
   <div class="game-screen hidden" id="gameScreen">
     <div class="game-content">
         <div id="coin"> 🥥0</div>
-        <img id="coinImage" src="image.png" >
+        <img id="coinImage" src="image.png" alt="Coin">
         <div class="container228">
             <div class="button228" onclick="toggleMiniButtons(this)">
               <img src="image.png" alt="Меню" draggable="false">
@@ -325,10 +324,6 @@
         const coinDisplay = document.getElementById('coin');
         const coinImage = document.getElementById('coinImage');
 
-        tg.expand();
-
-        // Get user ID from Telegram
-        const userId = tg.initDataUnsafe.user?.id;
 
         if (!userId) {
             alert("User ID not found. Please make sure you open this mini-app in Telegram.");
@@ -399,16 +394,6 @@
     document.getElementById('taskButton').addEventListener('click', () => {
       taskContainer.style.display = taskContainer.style.display === 'none' ? 'block' : 'none';
     });
-
-
-
-
-
-
-
-
-
-
 
 
 
