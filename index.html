@@ -238,8 +238,19 @@
 .username1 {
     position: absolute;      /* Абсолютное позиционирование относительно родителя */
     top: 10%;                /* Отступ сверху на 10% */
-    left: 5%;                /* Прижатие к правому краю */
-    margin-right: 3%;      /* Дополнительный отступ справа, если нужно */
+    left: 5%;                /* Прижатие к левой стороне */
+    padding: 10px 20px;      /* Отступы внутри кнопки */
+    font-size: 16px;         /* Размер шрифта */
+    font-weight: bold;       /* Жирный шрифт */
+    border: 5px solid transparent;
+  background: rgba(255, 255, 255, 0.5); /* Полупрозрачный белый фон */
+  backdrop-filter: blur(10px); /* Эффект размытия заднего фона */
+  background-clip: padding-box, border-box;
+  border-radius: 35px; /* Немного скругляем углы для мягкости */
+  margin: 0;
+  outline: none; /* Убираем контур при фокусе */
+  -webkit-tap-highlight-color: transparent; /* Убираем синий фон при нажатии */
+  cursor: pointer;        /* Курсор в виде руки */
 }
 
 
