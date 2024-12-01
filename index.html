@@ -109,12 +109,12 @@
   position: fixed; /* Фиксируем контейнер относительно окна */
   bottom: 0; /* Привязываем к нижней части экрана */
   left: 0; /* Привязываем к левому краю */
-  width: 95%; /* Растягиваем контейнер на всю ширину экрана */
+  width: 100%; /* Растягиваем контейнер на всю ширину экрана */
   display: flex;
   justify-content: space-evenly; /* Равномерное распределение элементов */
   align-items: center;
   height: var(--container-height);
-  padding: 3% 3%; /* Добавляем отступы слева и справа */
+  padding: 0; /* Убираем отступы, чтобы было впритык */
   border: 5px solid transparent;
   background: linear-gradient(to bottom, #ffffff, #b4b4b4);
   background-clip: padding-box, border-box;
@@ -123,6 +123,7 @@
   outline: none; /* Убираем контур при фокусе */
   -webkit-tap-highlight-color: transparent; /* Убираем синий фон при нажатии */
 }
+
 
 
 
@@ -303,15 +304,62 @@
     }
   });
 
-    let coinCount = 0;
-    const coinDisplay = document.getElementById('coin');
-    const coinImage = document.getElementById('coinImage');
-    
+  let coinCount = 0;
+const coinDisplay = document.getElementById('coin');
+const coinImage = document.getElementById('coinImage');
 
-    coinImage.addEventListener('click', (e) => {
-        coinCount += 1;
-        coinDisplay.textContent = `🥥${coinCount.toFixed(0)}`;
+// Функция для обновления монет на сервере
+async function updateCoinsOnServer(telegramId, newCoins) {
+    const response = await fetch('/coins', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            telegram_id: telegramId,
+            coins: newCoins,
+        }),
     });
+    const data = await response.json();
+    if (data.status !== 'success') {
+        console.error('Error updating coins:', data.error);
+    }
+}
+
+// Функция для получения монет с сервера
+async function fetchCoinsFromServer(telegramId) {
+    const response = await fetch(`/coins?telegram_id=${telegramId}`);
+    const data = await response.json();
+    if (data.coins !== undefined) {
+        coinCount = data.coins;
+        coinDisplay.textContent = `🥥${coinCount.toFixed(0)}`;
+    } else {
+        console.error('Error fetching coins:', data.error);
+    }
+}
+
+// Событие для клика на монетку
+coinImage.addEventListener('click', (e) => {
+    coinCount += 1;
+    coinDisplay.textContent = `🥥${coinCount.toFixed(0)}`;
+    
+    // Обновляем монеты на сервере
+    if (window.telegramId) {
+        updateCoinsOnServer(window.telegramId, coinCount);
+    } else {
+        console.error('Telegram ID not found.');
+    }
+});
+
+// Получение Telegram ID при запуске
+Telegram.WebApp.ready();
+Telegram.WebApp.onEvent('auth', (data) => {
+    window.telegramId = data.user.id; // Сохраняем Telegram ID в глобальной переменной
+
+    // Загружаем монеты с сервера
+    fetchCoinsFromServer(window.telegramId);
+});
+
 
 
     function toggleMiniButtons(button228) {
