@@ -302,78 +302,15 @@
       gameScreen.classList.remove('hidden');
     }, 5000);
 
-    
-    
-
-
-
-    const firebaseConfig = {
-  apiKey: "AIzaSyBb4qSwOxaOABqCQQYbZWWKpUP3mpJVLPA",
-  authDomain: "coconutclicker-b0f78.firebaseapp.com",
-  projectId: "coconutclicker-b0f78",
-  storageBucket: "coconutclicker-b0f78.firebasestorage.app",
-  messagingSenderId: "308633551511",
-  appId: "1:308633551511:web:e13be3904fa01ee7a8dfd2",
-  measurementId: "G-6HE58FQ5BR"
-};
-
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-        // Elements
-        const coinDisplay = document.getElementById('coin');
-        const coinImage = document.getElementById('coinImage');
-
-
-        if (!userId) {
-            alert("User ID not found. Please make sure you open this mini-app in Telegram.");
-        }
-
-        let coinCount = 0;
-
-        // Load coin count from Firestore
-        async function loadCoinCount() {
-            if (!userId) return;
-
-            const docRef = db.collection('users').doc(String(userId));
-            const doc = await docRef.get();
-            if (doc.exists) {
-                coinCount = doc.data().coins || 0;
-                coinDisplay.textContent = `🥥${coinCount}`;
-            } else {
-                console.log("No such document!");
-            }
-        }
-
-        // Save coin count to Firestore
-        async function saveCoinCount() {
-            if (!userId) return;
-
-            const docRef = db.collection('users').doc(String(userId));
-            await docRef.set({
-                coins: coinCount
-            });
-            console.log("Coin count saved!");
-        }
+    let coinCount = 0;
+    const coinDisplay = document.getElementById('coin');
+    const coinImage = document.getElementById('coinImage');
 
         // Handle button click
         coinImage.addEventListener('click', async () => {
             coinCount += 1;
             coinDisplay.textContent = `🥥${coinCount}`;
-            await saveCoinCount();
         });
-
-        // Load initial da
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -399,6 +336,16 @@ const db = firebase.firestore();
 
 
 
+
+
+
+
+
+
+
+
+
+
             // Инициализация Telegram Web App
             window.Telegram.WebApp.initData = window.Telegram.WebApp.initData || '';
         window.Telegram.WebApp.colorScheme = window.Telegram.WebApp.colorScheme || 'light';
@@ -413,3 +360,4 @@ const db = firebase.firestore();
   </script>
 </body>
 </html>
+
