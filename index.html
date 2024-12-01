@@ -41,13 +41,16 @@
       display: none; /* Убираем экран после загрузки */
     }
 
-    .username {
-      font-size: 20px;
-      font-weight: bold;
-      z-index: 11; /* На переднем плане */
-      font-family: 'MrCoasterGBlack', Arial, sans-serif;
-      top: 30%;
-    }
+.username {
+  font-size: 20px;
+  font-weight: bold;
+  z-index: 11; /* На переднем плане */
+  font-family: 'MrCoasterGBlack', Arial, sans-serif;
+  position: absolute;  /* Устанавливаем абсолютное позиционирование */
+  left: 20px; /* Отступ от левой стороны экрана */
+  top: 30%; /* Вертикальное положение относительно родительского контейнера */
+}
+
 
     .progress-bar-container {
   position: absolute;
@@ -305,7 +308,7 @@ const updateUsername = (elementId, textPrefix, textSize1, defaultText, textSize 
     const usernameElement = document.getElementById(elementId);
     if (username) {
         usernameElement.innerHTML = `
-            <div style="text-align: right; font-size: ${textSize1}; line-height: 1.2; margin-right: 20px;">
+            <div style="text-align: left; font-size: ${textSize1}; line-height: 1.2; margin-right: 20px;">
                 <span>${textPrefix}</span><br>
                 <span style="font-size: ${textSize};">${username}!</span>
             </div>
