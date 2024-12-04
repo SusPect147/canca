@@ -7,194 +7,176 @@
   <meta name="robots" content="noindex, nofollow">
   <title>New Coconut Clicker</title>
   <style>
-/* Общие стили (для всех устройств) */
-@font-face {
-    font-family: 'MrCoasterGBlack';
-    src: url('20694.otf') format('opentype');
-}
-
-body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-    user-select: none;
-}
-
-.loading-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(-45deg, rgb(34, 2, 24), rgb(94, 58, 8));
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 11;
-}
-
-.loading-screen.hidden {
-    display: none;
-}
-
+      @font-face {
+      font-family: 'MrCoasterGBlack';
+      src: url('20694.otf') format('opentype');
+    }
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      user-select: none;
+    }
+    .loading-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-45deg, rgb(34, 2, 24), rgb(94, 58, 8));
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 11;
+    }
+    .loading-screen.hidden {
+      display: none;
+    }
 .username {
-    font-size: 20px;
-    font-weight: bold;
-    z-index: 11;
-    font-family: 'MrCoasterGBlack', Arial, sans-serif;
-    position: absolute;
-    left: 20px;
-    top: 30%;
+  font-size: 20px;
+  font-weight: bold;
+  z-index: 11;
+  font-family: 'MrCoasterGBlack', Arial, sans-serif;
+  position: absolute;
+  left: 20px;
+  top: 30%;
 }
-
-.progress-bar-container {
-    position: absolute;
-    bottom: 20px;
-    width: 80%;
-    height: 10px;
-    background-color: #000000;
-    border-radius: 5px;
-    overflow: hidden;
-    z-index: 11;
+    .progress-bar-container {
+  position: absolute;
+  bottom: 20px;
+  width: 80%;
+  height: 10px;
+  background-color: #000000;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 11;
 }
-
 .progress-bar {
-    width: 0;
-    height: 100%;
-    background-color: rgb(255, 255, 255);
-    transition: width 2s linear;
-    z-index: 12;
+  width: 0;
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  transition: width 2s linear;
+  z-index: 12;
 }
-
 .loading-text {
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    transition: transform 0.1s ease;
-    z-index: 12;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  transition: transform 0.1s ease;
+  z-index: 12;
 }
-
 .hidden {
-    display: none;
+  display: none;
 }
+    .game-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #1f0414 0%, #512a06 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      font-family: 'MrCoasterGBlack', Arial, sans-serif;
+    }
+    .game-screen.hidden {
+      display: none;
+    }
+    .game-content {
+      font-size: 24px;
+      text-align: center;
+    }
+    .loading-coconut {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      transform: translate(50%, 0%);
+      width: 500px;
+      height: auto;
+      opacity: 0.5;
+      z-index: 10;
 
-.game-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, #1f0414 0%, #512a06 100%);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    font-family: 'MrCoasterGBlack', Arial, sans-serif;
+    }
+    .container228 {
+  position: fixed;
+  bottom: 2%;
+  left: 0;
+  width: 98%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 90px;
+  border: 5px solid transparent;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  background-clip: padding-box, border-box;
+  border-radius: 35px;
+  margin: 0;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
+    .button228 {
+      background-color: transparent;
+      border-radius: 5px;
+      height: var(--button-height);
+      cursor: pointer;
+      margin: 0 5px;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      transition: brightness 0.2s;
+ 
+    }
+    .button228 img {
+      width: 50px;
+      height: 50px;
+      border-radius: 5px;
+      transition: transform 0.2s;
+      border-radius: 10px;
+      outline: none;
+  -webkit-tap-highlight-color: transparent;
+    }
+    .button228:hover img {
+      transform: scale(1.1);
+    }
+    .button228-text {
+      margin-top: 2px;
+      font-size: 15px;
+      color: rgb(0, 0, 0);
 
-.game-screen.hidden {
-    display: none;
-}
-
-.game-content {
-    font-size: 24px;
-    text-align: center;
-}
-
-.loading-coconut {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    transform: translate(50%, 0%);
-    width: 500px;
-    height: auto;
-    opacity: 0.5;
-    z-index: 10;
-}
-
-.container228 {
-    position: fixed;
-    bottom: 2%;
-    left: 0;
-    width: 98%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 90px;
-    border: 5px solid transparent;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    background-clip: padding-box, border-box;
-    border-radius: 35px;
-    margin: 0;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.button228 {
-    background-color: transparent;
-    border-radius: 5px;
-    height: var(--button-height);
-    cursor: pointer;
-    margin: 0 5px;
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    transition: brightness 0.2s;
-}
-
-.button228 img {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    transition: transform 0.2s;
-    border-radius: 10px;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.button228:hover img {
-    transform: scale(1.1);
-}
-
-.button228-text {
-    margin-top: 2px;
-    font-size: 15px;
-    color: rgb(0, 0, 0);
-}
-
-.mini-buttons {
-    display: none;
-    flex-direction: row;
-    margin-bottom: 1px;
-}
-
-.mini-button {
-    background-color: #59a9c2;
-    border: none;
-    border-radius: 5px;
-    padding: 2px 5px;
-    margin: 0 2px;
-    cursor: pointer;
-    color: white;
-    transition: filter 0.2s;
-    height: auto;
-}
-
-img {
+    }
+    .mini-buttons {
+      display: none;
+      flex-direction: row;
+      margin-bottom: 1px;
+    }
+    .mini-button {
+      background-color: #59a9c2;
+      border: none;
+      border-radius: 5px;
+      padding: 2px 5px;
+      margin: 0 2px;
+      cursor: pointer;
+      color: white;
+      transition: filter 0.2s;
+      height: auto;
+    }
+    img {
     width: 300px;
     top: 40%;
     cursor: pointer;
@@ -205,25 +187,21 @@ img {
     user-select: none;
     -webkit-user-drag: none;
 }
-
-#coinImage:active {
-    transform: scale(0.9);
+    #coinImage:active {
+      transform: scale(0.9);
+    }
+    img active {
+      box-shadow: 2px 2px 5px #fc894d;
+    }
+        #coin {
+  position: absolute;
+  top: 12%;
+  left: 70%;
+  transform: translateX(-50%);
+  font-size: 33px;
+  font-weight: bold;
+  color: #ffffff;
 }
-
-img active {
-    box-shadow: 2px 2px 5px #fc894d;
-}
-
-#coin {
-    position: absolute;
-    top: 12%;
-    left: 70%;
-    transform: translateX(-50%);
-    font-size: 33px;
-    font-weight: bold;
-    color: #ffffff;
-}
-
 .username1 {
     position: absolute;
     top: 10%;
@@ -232,16 +210,15 @@ img active {
     font-size: 16px;
     font-weight: bold;
     border: 5px solid transparent;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    background-clip: padding-box, border-box;
-    border-radius: 35px;
-    margin: 0;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  background-clip: padding-box, border-box;
+  border-radius: 35px;
+  margin: 0;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
-
 #clickEffectContainer {
     position: fixed;
     top: 0;
@@ -251,7 +228,6 @@ img active {
     pointer-events: none;
     z-index: 1000;
 }
-
 .clickEffect {
     position: absolute;
     color: #444444;
@@ -261,7 +237,6 @@ img active {
     user-select: none;
     animation: fadeUp 2s ease-out forwards;
 }
-
 @keyframes fadeUp {
     0% {
         transform: translateY(0);
@@ -272,153 +247,6 @@ img active {
         opacity: 0;
     }
 }
-
-/* Мобильные устройства (макс. ширина 480px) */
-@media (max-width: 480px) {
-    body {
-        font-size: 12px;
-    }
-
-    .loading-screen,
-    .game-screen {
-        justify-content: center;
-    }
-
-    .username {
-        font-size: 14px;
-        top: 8%;
-    }
-
-    .progress-bar-container {
-        width: 95%;
-    }
-
-    .container228 {
-        width: 100%;
-        height: 60px;
-    }
-
-    .button228 img {
-        width: 35px;
-        height: 35px;
-    }
-
-    .button228-text {
-        font-size: 10px;
-    }
-
-    .game-content {
-        font-size: 18px;
-    }
-
-    img {
-        width: 220px;
-    }
-
-    .username1 {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-}
-
-/* Планшеты и мобильные устройства среднего размера (макс. ширина 768px) */
-@media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
-
-    .loading-screen,
-    .game-screen {
-        flex-direction: column;
-    }
-
-    .username {
-        font-size: 16px;
-        top: 10%;
-    }
-
-    .progress-bar-container {
-        width: 90%;
-    }
-
-    .container228 {
-        width: 100%;
-        height: 70px;
-    }
-
-    .button228 img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .button228-text {
-        font-size: 12px;
-    }
-
-    .game-content {
-        font-size: 20px;
-    }
-
-    img {
-        width: 250px;
-    }
-
-    .username1 {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-}
-
-/* Для больших экранов, например, десктопов (минимальная ширина 1024px) */
-@media (min-width: 1024px) {
-    body {
-        font-size: 16px;
-    }
-
-    .loading-screen,
-    .game-screen {
-        flex-direction: column;
-        padding: 0 10%;
-    }
-
-    .username {
-        font-size: 22px;
-        top: 5%;
-    }
-
-    .progress-bar-container {
-        width: 80%;
-    }
-
-    .container228 {
-        width: 80%;
-        height: 90px;
-    }
-
-    .button228 img {
-        width: 60px;
-        height: 60px;
-    }
-
-    .button228-text {
-        font-size: 18px;
-    }
-
-    .game-content {
-        font-size: 26px;
-    }
-
-    img {
-        width: 300px;
-    }
-
-    .username1 {
-        font-size: 18px;
-        padding: 10px 20px;
-    }
-}
-
-
 
   </style>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
