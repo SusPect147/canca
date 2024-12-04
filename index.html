@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" href="coconut_coconut.png" type="image/x-icon">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Telegram Mini App</title>
+  <meta name="robots" content="noindex, nofollow">
+  <title>New Coconut Clicker</title>
   <style>
       @font-face {
       font-family: 'MrCoasterGBlack';
@@ -208,15 +210,19 @@
 
 
     img {
-            width: 250px;
-            top: 40%;
-            cursor: pointer;
-            outline: none;
-            pointer-events: auto;
-            -webkit-tap-highlight-color: transparent;
-            transition: transform 0.1s;
+    width: 300px;
+    top: 40%;
+    cursor: pointer;
+    outline: none;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.1s;
     user-select: none; /* Запрет выделения */
-        }
+    
+    /* Запрет перетаскивания */
+    -webkit-user-drag: none;
+}
+
     
     #coinImage:active {
       transform: scale(0.9);
@@ -228,7 +234,7 @@
 
         #coin {
   position: absolute; /* Фиксируем элемент относительно окна */
-  top: 15%; /* Отступ сверху 5% */
+  top: 12%; /* Отступ сверху 5% */
   left: 70%; /* Центрируем по горизонтали */
   transform: translateX(-50%); /* Смещаем элемент влево на половину его ширины для точного центрирования */
   font-size: 33px; /* Размер шрифта */
@@ -251,6 +257,36 @@
   outline: none; /* Убираем контур при фокусе */
   -webkit-tap-highlight-color: transparent; /* Убираем синий фон при нажатии */
   cursor: pointer;        /* Курсор в виде руки */
+}
+#clickEffectContainer {
+    position: fixed;  /* Покрывает весь экран */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Эффекты не блокируют клики */
+    z-index: 1000; /* Поверх всех элементов */
+}
+
+.clickEffect {
+    position: absolute;
+    color: #444444; /* Цвет текста */
+    font-size: 30px;
+    font-weight: bold;
+    opacity: 1;
+    user-select: none; /* Текст нельзя выделить */
+    animation: fadeUp 2s ease-out forwards;
+}
+
+@keyframes fadeUp {
+    0% {
+        transform: translateY(0); /* Начальное положение */
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px); /* Движение вверх */
+        opacity: 0; /* Полностью прозрачный */
+    }
 }
 
 
@@ -277,6 +313,7 @@
     <div class="game-content">
         <p class="username1" id="username1">One minute please...</p>
         <div id="coin"> 🥥0</div>
+        <div id="clickEffectContainer"></div> <!-- Контейнер для эффекта -->
         <img id="coinImage" src="image.png" alt="Coin">
         <div class="container228">
             <div class="button228" onclick="toggleMiniButtons(this)">
@@ -384,15 +421,57 @@ const interval = setInterval(() => {
 
 
 
-    let coinCount = 0;
-    const coinDisplay = document.getElementById('coin');
-    const coinImage = document.getElementById('coinImage');
+let coinCount = 0;
+const coinDisplay = document.getElementById('coin');
+const coinImage = document.getElementById('coinImage');
+const clickEffectContainer = document.getElementById('clickEffectContainer');
 
-        // Handle button click
-        coinImage.addEventListener('click', async () => {
-            coinCount += 1;
-            coinDisplay.textContent = `🥥${coinCount}`;
-        });
+// Функция форматирования чисел (без изменений)
+function formatNumber(number) {
+    if (number >= 1_000_000_000_000) {
+        return (number / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 'T';
+    } else if (number >= 1_000_000_000) {
+        return (number / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+    } else if (number >= 1_000_000) {
+        return (number / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+    } else if (number >= 1_000) {
+        return (number / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+    } else {
+        return number;
+    }
+}
+
+// Функция для создания эффекта "+1" с задержкой
+function showClickEffect(event) {
+    setTimeout(() => {  // Задержка на 0.2 секунды (200 миллисекунд)
+        const effect = document.createElement('div');
+        effect.classList.add('clickEffect');
+        effect.textContent = '+1';
+
+        // Позиционируем эффект на месте клика
+        const offsetX = event.clientX;  // X координата клика
+        const offsetY = event.clientY;  // Y координата клика
+        effect.style.left = `${offsetX}px`;
+        effect.style.top = `${offsetY}px`;
+
+        // Добавляем эффект на страницу
+        clickEffectContainer.appendChild(effect);
+
+        // Удаляем элемент после завершения анимации (через 2 секунды)
+        setTimeout(() => {
+            effect.remove();
+        }, 2000);
+    }, 200); // 200 миллисекунд = 0.2 секунды
+}
+
+// Обработка клика по изображению
+coinImage.addEventListener('click', (event) => {
+    coinCount += 1;
+    coinDisplay.textContent = `🥥${formatNumber(coinCount)}`;
+    showClickEffect(event); // Вызов функции для создания эффекта
+});
+
+
 
 
 
