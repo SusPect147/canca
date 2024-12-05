@@ -186,10 +186,33 @@
     transition: transform 0.1s;
     user-select: none;
     -webkit-user-drag: none;
+    position: relative;
 }
-    #coinImage:active {
-      transform: scale(0.9);
+
+#coinImage.shake {
+    transform: scale(0.9);
+    animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(0, 0);
     }
+    25% {
+        transform: translate(-5px, -5px); /* Влево и вверх */
+    }
+    50% {
+        transform: translate(5px, 5px);  /* Вправо и вниз */
+    }
+    75% {
+        transform: translate(-5px, 5px); /* Влево и вниз */
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+
     img active {
       box-shadow: 2px 2px 5px #fc894d;
     }
@@ -328,6 +351,14 @@ const updateUsername = (elementId, textPrefix, textSize1, defaultText, textSize 
 updateUsername('username1', 'profile:', '25px', '?????', '25px');  // Для второго username с размером 10px
 updateUsername('username', 'Hello,','45px', 'Welcome to the Coconut Clicker', '30px');  // Для первого username с размером 30px
 
+document.getElementById('coinImage').addEventListener('click', function() {
+    this.classList.add('shake');  // Добавляем класс, чтобы запустить анимацию
+
+    // Убираем класс после завершения анимации, чтобы можно было кликать снова
+    setTimeout(() => {
+        this.classList.remove('shake');
+    }, 300);  // 300ms — это продолжительность анимации
+});
 
 
 
